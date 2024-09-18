@@ -1,0 +1,29 @@
+name: Doc Site Build
+on:
+  push:
+    branches:
+      - master
+  release:
+    types: [published]
+jobs:
+  build:
+    name: Build Doc
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Find variables
+        id: vars
+        # if no version, should be on master branch push, use "dev", otherwise major.minor
+        run: |
+          [ "$GITHUB_REF_NAME" = "master" ] && (echo version=dev >> $GITHUB_OUTPUT) || (echo version=$GITHUB_REF_NAME | cut -d "." -f 1,2 >> $GITHUB_OUTPUT)
+          echo git_msg=\"$(git log -1 --pretty=format:'%s')\" >> $GITHUB_OUTPUT
+          echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+      - name: Install npm packages
+        run: npm ci
+      - name: Build the document
+        run: echo npm run doc -- --gitRevision $GITHUB_REF_NAME
+      - name: Build Doc Site
+        run: echo mv _site site/${{ steps.vars.outputs.version }}
