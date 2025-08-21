@@ -1,0 +1,17 @@
+name: coverage
+on:
+  workflow_run:
+    workflows: [test]
+    types: [completed]
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+    - run: |
+        echo "github object:"
+        echo "${{ toJson(github) }}"
+    - run: |
+        echo "event object:"
+        echo "${{ toJson(github.event) }}"
