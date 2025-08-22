@@ -44,7 +44,8 @@ jobs:
       - uses: actions/setup-node@v4
       - run: npm ci
       - run: npm test
-      - uses: romeovs/lcov-reporter-action@v0.4.0
+      - uses: zgosalvez/github-actions-report-lcov@v4
         if: github.event_name == 'pull_request_target'
         with:
           github-token: ${{ secrets.COV_REPORT }}
+          coverage-files: coverage/lcov.info
