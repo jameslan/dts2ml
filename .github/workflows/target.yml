@@ -24,9 +24,11 @@ jobs:
     environment: ${{ github.event_name == 'pull_request_target' && !needs.dispatch.outputs.hasWritePermission && 'external' || 'CI' }}
     steps:
       - run: |
-          echo "running environment: ${{ github.event_name == 'pull_request_target' && !needs.dispatch.outputs.hasWritePermission && 'external' || 'CI' }}"
+          echo "event name: ${{ github.event_name == 'pull_request_target' }}"
           echo "hasWritePermission: ${{ needs.dispatch.outputs.hasWritePermission }}"
+          echo "not hasWritePermission: ${{ !needs.dispatch.outputs.hasWritePermission }}"
           echo "should use external: ${{ github.event_name == 'pull_request_target' && !needs.dispatch.outputs.hasWritePermission }}"
+          echo "running environment: ${{ github.event_name == 'pull_request_target' && !needs.dispatch.outputs.hasWritePermission && 'external' || 'CI' }}"
       - run: |
           echo "github object:"
           echo "${{ toJson(github) }}"
