@@ -36,6 +36,11 @@ jobs:
           echo "event object:"
           echo "${{ toJson(github.event) }}"
       - uses: actions/checkout@v4
+        if: github.event_name == 'pull_request_target'
+        with:
+          ref: "refs/remotes/pull/${{ github.event.number }}/merge"
+      - uses: actions/checkout@v4
+        if: github.event_name != 'pull_request_target'
       - uses: actions/setup-node@v4
       - run: npm ci
       - run: npm test
