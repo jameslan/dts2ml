@@ -22,6 +22,8 @@ jobs:
     steps:
       - run: |
           echo "running environment: ${{ github.event_name == 'pull_request_target' && !needs.dispatch.outputs.hasWritePermission && 'external' || 'CI' }}"
+          echo "hasWritePermission: ${{ needs.dispatch.outputs.hasWritePermission }}"
+          echo "should use external: ${{ github.event_name == 'pull_request_target' && !needs.dispatch.outputs.hasWritePermission }}"
       - run: |
           echo "github object:"
           echo "${{ toJson(github) }}"
@@ -33,7 +35,7 @@ jobs:
       - run: npm ci
       - run: npm test
       - uses: romeovs/lcov-reporter-action@v0.4.0
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request_target'
         with:
           github-token: ${{ secrets.COV_REPORT }}
           lcov-file: coverage/lcov.info
