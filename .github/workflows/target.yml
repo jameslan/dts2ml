@@ -1,0 +1,35 @@
+name: target
+on:
+  push:
+    branches:
+      - master
+      - 'releases/**'
+  pull_request_target:
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    outputs:
+      hasWritePermission: ${{ contains(fromJson('["admin", "write"]'), steps.userPermission.outputs.user-permission) }}
+    steps:
+      - id: userPermission
+        uses: actions-cool/check-user-permission@v2
+  build:
+    needs: dispatch
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    environment: ${{ github.event_name == 'pull_request_target' && needs.dispatch.outputs.hasWritePermission && 'CI' || 'external' }}
+    steps:
+      - run: |
+          echo "github object:"
+          echo "${{ toJson(github) }}"
+      - run: |
+          echo "event object:"
+          echo "${{ toJson(github.event) }}"
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - run: npm ci
+      - run: npm test
+      - uses: romeovs/lcov-reporter-action@v0.4.0
+        with:
+          github-token: ${{ secrets.COV_REPORT }}
