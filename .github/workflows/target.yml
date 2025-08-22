@@ -13,6 +13,9 @@ jobs:
     steps:
       - id: userPermission
         uses: actions-cool/check-user-permission@v2
+      - run: |
+          echo "user-permission: ${{ steps.userPermission.outputs.user-permission }}"
+          echo "hasWritePermission: ${{ contains(fromJson('["admin", "write"]'), steps.userPermission.outputs.user-permission) }}"
   build:
     needs: dispatch
     runs-on: ubuntu-latest
@@ -38,4 +41,3 @@ jobs:
         if: github.event_name == 'pull_request_target'
         with:
           github-token: ${{ secrets.COV_REPORT }}
-          lcov-file: coverage/lcov.info
