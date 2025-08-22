@@ -21,14 +21,14 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
-    environment: ${{ github.event_name == 'pull_request_target' && !needs.dispatch.outputs.hasWritePermission && 'external' || 'CI' }}
+    environment: ${{ github.event_name == 'pull_request_target' && !fromJson(needs.dispatch.outputs.hasWritePermission) && 'external' || 'CI' }}
     steps:
       - run: |
           echo "event name: ${{ github.event_name == 'pull_request_target' }}"
           echo "hasWritePermission: ${{ needs.dispatch.outputs.hasWritePermission }}"
-          echo "not hasWritePermission: ${{ !needs.dispatch.outputs.hasWritePermission }}"
-          echo "should use external: ${{ github.event_name == 'pull_request_target' && !needs.dispatch.outputs.hasWritePermission }}"
-          echo "running environment: ${{ github.event_name == 'pull_request_target' && !needs.dispatch.outputs.hasWritePermission && 'external' || 'CI' }}"
+          echo "not hasWritePermission: ${{ !fromJson(needs.dispatch.outputs.hasWritePermission) }}"
+          echo "should use external: ${{ github.event_name == 'pull_request_target' && !fromJson(needs.dispatch.outputs.hasWritePermission) }}"
+          echo "running environment: ${{ github.event_name == 'pull_request_target' && !fromJson(needs.dispatch.outputs.hasWritePermission) && 'external' || 'CI' }}"
       - run: |
           echo "github object:"
           echo "${{ toJson(github) }}"
