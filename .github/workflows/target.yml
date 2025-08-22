@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
-    environment: ${{ github.event_name == 'pull_request_target' && needs.dispatch.outputs.hasWritePermission && 'CI' || 'external' }}
+    environment: ${{ github.event_name == 'pull_request_target' && !needs.dispatch.outputs.hasWritePermission && 'external' || 'CI' }}
     steps:
       - run: |
           echo "github object:"
@@ -31,5 +31,7 @@ jobs:
       - run: npm ci
       - run: npm test
       - uses: romeovs/lcov-reporter-action@v0.4.0
+        if: github.event_name == 'pull_request'
         with:
           github-token: ${{ secrets.COV_REPORT }}
+          lcov-file: coverage/lcov.info
