@@ -1,0 +1,19 @@
+opam-version: "2.0"
+name: "dts2ml"
+authors: "James Lan"
+homepage: "https://github.com/jameslan/dts2ml"
+maintainer: "jameslan@gmail.com"
+dev-repo: "git@github.com:jameslan/dts2ml.git"
+bug-reports: "https://github.com/jameslan/dts2ml/issues"
+version: "0.0.1"
+build: [
+  [ "dune" "subst" ] {pinned}
+  [ "dune" "build" "-p" name "-j" jobs ]
+]
+depends: [
+  "ocaml"
+  "dune" {build}
+  "melange" {build}
+  "ocamlformat" {with-dev-setup}
+  "ocaml-lsp-server" {with-dev-setup}
+]
