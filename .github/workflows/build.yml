@@ -12,8 +12,16 @@ jobs:
       - uses: actions/setup-node@v4
       - run: npm ci
       - run: npm test
+      - name: Save PR number
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          mkdir -p coverage/pr
+          echo ${{ github.event.number }} > coverage/pr/pr_num
+          cp coverage/lcov.info coverage/pr
       - name: Upload coverage
         uses: actions/upload-artifact@v4
         if: ${{ github.event_name == 'pull_request' }}
         with:
-          path: coverage/lcov.info
+          name: coverage-artifact
+          path: coverage/pr
+          retention-days: 1 # for coverage commenting, doesn't need to be long
