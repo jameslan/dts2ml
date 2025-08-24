@@ -24,9 +24,9 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         run_id: ${{ github.event.workflow_run.id }}
         name: coverage-artifact
-    - name: Get PR number
-      id: get-pr
-      run: echo NUM=$(cat pr_num) >> "$GITHUB_OUTPUT"
+    # - name: Get PR number
+    #   id: get-pr
+    #   run: echo NUM=$(cat pr_num) >> "$GITHUB_OUTPUT"
     - uses: jameslan/lcov-reporter-action@romeovs-master
       with:
         lcov-file: lcov.info
