@@ -30,7 +30,7 @@ jobs:
     - uses: jameslan/lcov-reporter-action@romeovs-master
       with:
         lcov-file: lcov.info
-        pr-number: ${{ steps.get-pr.outputs.NUM }}
+        pr-number: ${{ github.event.workflow_run.pull_requests[0].number }}
         delete-old-comments: true
         title: 中文
         filter-changed-files: true
