@@ -6,4 +6,8 @@ describe('suite', () => {
     it('test', () => {
         expect(abs(-3)).to.equal(3);
     });
+
+    it('test2', () => {
+        // expect(abs(3)).to.equal(3);
+    });
 });
