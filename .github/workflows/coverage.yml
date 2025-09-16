@@ -27,7 +27,7 @@ jobs:
     # - name: Get PR number
     #   id: get-pr
     #   run: echo NUM=$(cat pr_num) >> "$GITHUB_OUTPUT"
-    - uses: jameslan/lcov-reporter-action@romeovs-master
+    - uses: jameslan/lcov-reporter-action@prnumber
       with:
         lcov-file: lcov.info
         pr-number: ${{ github.event.workflow_run.pull_requests[0].number }}
