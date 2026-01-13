@@ -25,3 +25,11 @@ jobs:
           name: coverage-artifact
           path: coverage/pr
           retention-days: 1 # for coverage commenting, doesn't need to be long
+      - run: |
+          echo "github object:"
+          echo "${{ toJson(github) }}"
+      - run: |
+          echo "event object:"
+          echo "${{ toJson(github.event) }}"
+      - run: |
+          echo "${{ github.token}} == ${{ secrets.GITHUB_TOKEN }}: ${{ github.token == secrets.GITHUB_TOKEN }}"
