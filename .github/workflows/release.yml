@@ -1,3 +1,4 @@
+name: Release
 on:
   workflow_dispatch:
     inputs:
@@ -11,7 +12,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
     steps:
       - uses: actions/checkout@v4
       - name: create release
@@ -21,4 +22,5 @@ jobs:
           body: ${{ inputs.note }}
           tag: v${{ inputs.version }}
           commit: ${{ github.sha }}
+          token: ${{ secrets.RELEASE_TOKEN }} # Must be a PAT with repo access, to trigger following doc workflow
 
